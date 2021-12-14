@@ -1,6 +1,13 @@
-const movieArr = []
+const fs = require("fs")
+let movieArr
 
-
+const pullMoviesData = () => {
+    try{
+        movieArr = JSON.parse(fs.readFileSync("./storage.json"))
+    } catch{
+        movieArr = []
+    }
+}
 
 class Movie {
     constructor(title, actor = "Not specified"){
@@ -12,12 +19,10 @@ class Movie {
         movieArr.push(this);
         console.log(movieArr[movieArr.length - 1]);
     }
+
+    save() {
+        fs.writeFileSync("./storage.json", JSON.stringify(movieArr))
+    }
 }
 
-const complete = () => {
-    movieArr.map((film) =>{
-        console.log(film)
-    })
-}
-
-module.exports = {complete, Movie}
+module.exports = {Movie, pullMoviesData}

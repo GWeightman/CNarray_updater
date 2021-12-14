@@ -1,7 +1,5 @@
 const inquirer = require('inquirer')
-const func = require("./utils/functions.js")
-const Movie = func.Movie
-const complete = func.complete
+const {Movie, pullMoviesData} = require("./utils/functions.js")
 
 let start = [
     {
@@ -26,14 +24,15 @@ let question = [
 
 const app = async () => {
     let newbee = await inquirer.prompt(start)
+    pullMoviesData()
     switch (newbee.start){
         case true:
             let response = await inquirer.prompt(question)
             const newMovie = new Movie(response.movie, response.actor)
             newMovie.add();
+            newMovie.save()
             break;
         case false:
-            complete()
             return
         default:
             console.log("err")
